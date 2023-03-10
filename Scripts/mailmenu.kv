@@ -1,0 +1,140 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+# Mail menu stuff
+<MailMenu>
+
+    # App background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: root.background
+
+    # Screen layout
+    FloatLayout:
+
+        # Action bar layout
+        # You can add this if you want colored action bar. 
+        # Button:
+        #     size_hint: 1, None
+        #     height: "100dp"
+        #     pos_hint: {"top": 1}
+        #     disabled: True 
+        #     background_normal: ''
+        #     background_disabled_normal: ''
+        #     background_color: "000000"
+        
+        # Action bar label
+        Label:
+            size_hint: 0.3 , None
+            height: "30dp"
+            pos_hint: {"center_x": 0.5, "top":0.97}
+            halign: "center"
+            markup: True 
+            font_size: "20sp"
+            font_name: root.font
+            text: "MaiL"
+            color: "009AC2"
+
+        # Mail address label
+        # Email address will be shown here
+        Label:
+            id: MailAddr
+            size_hint: 0.9 , None
+            height: "35dp"
+            pos_hint: {"center_x": 0.5, "center_y":0.8}
+            halign: "center"
+            markup: True 
+            font_name: "RobotoMono-Regular"
+            text: ""
+            color: "009AC2"
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, .1
+                Line:
+                    width: 1.05
+                    rounded_rectangle:
+                        ( \
+                        self.x, self.y, self.width, self.height, \
+                        10, 10, 10, 10, \
+                        self.height \
+                        )
+
+        # Created date label
+        Label:
+            id: CreatedDate
+            size_hint: 0.9 , None
+            height: "35dp"
+            pos_hint: {"center_x": 0.5, "center_y":0.18}
+            halign: "center"
+            markup: True 
+            font_name: "RobotoMono-Regular"
+            text: "Created at"
+            color: "00D194"
+
+        # Created date box
+        # Email created date will be shown here
+        Label:
+            id: CreatedDate
+            size_hint: 0.9 , None
+            height: "35dp"
+            pos_hint: {"center_x": 0.5, "center_y":0.1}
+            halign: "center"
+            markup: True 
+            font_name: "RobotoMono-Regular"
+            text: ""
+            bold: True
+            color: "00D194"
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, .1
+                Line:
+                    width: 1.05
+                    rounded_rectangle:
+                        ( \
+                        self.x, self.y, self.width, self.height, \
+                        10, 10, 10, 10, \
+                        self.height \
+                        )
+
+        # Back button
+        # This will navigate you to main menu
+        ImageButton:
+            pos_hint: {"center_x": 0.125, "top": 1}
+            size_hint: 0.1, 0.1
+            source: "Assets/back.png"
+            on_press:
+                root.manager.transition = FadeTransition(duration=0.05)
+                root.manager.current = 'MainMenu'
+
+        # Inbox button
+        # This will navigate you to inbox menu
+        ImageButton:
+            pos_hint: {"center_x": .875, "top": 1}
+            size_hint: 0.1, 0.1
+            source: "Assets/inbox.png"
+            on_press:
+                root.load_messages()
+                root.manager.transition = FadeTransition(duration=0.05)
+                root.manager.current = 'Mailbox'
+
+        # Add button
+        # This will generate you new Email address
+        ImageButton:
+            pos_hint: {"center_x": 0.75, "top": 1}
+            size_hint: 0.1, 0.1
+            source: "Assets/add.png"
+            on_press:
+                root.generate_email()
+
+        # Mail Icon
+        # This will copy your Email details in clipboard
+        ImageButton:
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            size_hint: 0.5, 0.5
+            source: "Assets/mail_icon.png"
+            on_press:
+                root.copy_email()
+
+# End Of Script
