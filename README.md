@@ -23,19 +23,19 @@ Will be fixed in next updates!
 so this app works online with public APIs. if you have any idea to add let me know in 'Issues' section in repository
 
 # Setup
-#### Clone the repository
+#### ⒈ Clone the repository
 ```bash
 git clone https://github.com/Kourva/EyeZ.git
 ```
-#### navigate to Eyez
+#### ⒉ Navigate to Eyez directory
 ```bash
 cd EyeZ
 ```
-#### install the requirements
+#### ⒊ Install the requirements
 ```bash
 chmod +x Lib/install.sh && ./install.sh
 ```
-#### install python-dbus for notification (optional)
+#### ⒋ Install python-dbus for notification (optional)
 + Debian based
 ```bash
 sudo apt install python-dbus
@@ -44,7 +44,7 @@ sudo apt install python-dbus
 ```bash
 sudo pacman -S python-dbus
 ```
-#### run the app
+#### ⒌ run the app
 + Normally
 ```bash
 python main.py
