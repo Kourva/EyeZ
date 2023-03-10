@@ -40,4 +40,12 @@ chmod +x Lib/install.sh && ./install.sh
 sudo pacman -S python-dbus   (for arch based)
 sudo apt install python-dbus (for debian based)
 ```
++ run the app normally
+```bash
+python main.py
+```
++ run the app for specific phone (see all availabel phones)
+```
+python main.py -m screen
+```
 
