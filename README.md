@@ -6,20 +6,19 @@
 
 <br><br>
 
-# About The app
-### Features:
-+ Temporary E-mail service
-+ URL shortener
-+ Works Online with free public APIs <br>
-+ Version 0.0.0 (demo)
+### ▍Features
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Temporary E-mail service <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ URL shortener <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Works Online with free public APIs <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Version 0.0.0 (demo)
 
-### Issues:
-Will be fixed in next updates!
-+ Can't check the valid url for now
-+ Can't use verify links from mailbox (only OTP for now)
-+ App may crash due to slow internet connection (request timeout will fix it)
+### ▍Issues
+Will be fixed in next updates! <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Can't check the valid url for now <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Can't use verify links from mailbox (only OTP for now) <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ App may crash due to slow internet connection (request timeout will fix it)
 
-### Idea?
+### ▍Idea?
 so this app works online with public APIs. if you have any idea to add let me know in 'Issues' section in repository
 
 # Setup
@@ -36,20 +35,20 @@ cd EyeZ
 chmod +x Lib/install.sh && ./install.sh
 ```
 #### ⒋ Install python-dbus for notification (optional)
-+ Debian based
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Debian based
 ```bash
 sudo apt install python-dbus
 ```
-+ Arch based
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Arch based
 ```bash
 sudo pacman -S python-dbus
 ```
 #### ⒌ run the app
-+ Normally
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Normally
 ```bash
 python main.py
 ```
-+ Specific phone
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Specific phone
 ```
 python main.py -m screen
 ```
