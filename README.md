@@ -23,28 +23,33 @@ Will be fixed in next updates!
 so this app works online with public APIs. if you have any idea to add let me know in 'Issues' section in repository
 
 # Setup
-+ clone the repo
+#### Clone the repository
 ```bash
 git clone https://github.com/Kourva/EyeZ.git
 ```
-+ navigate to Eyez
+#### navigate to Eyez
 ```bash
 cd EyeZ
 ```
-+ install the requirements
+#### install the requirements
 ```bash
 chmod +x Lib/install.sh && ./install.sh
 ```
-+ install python-dbus for notification (optional)
+#### install python-dbus for notification (optional)
++ Debian based
 ```bash
-sudo pacman -S python-dbus   (for arch based)
-sudo apt install python-dbus (for debian based)
+sudo apt install python-dbus
 ```
-+ run the app normally
++ Arch based
+```bash
+sudo pacman -S python-dbus
+```
+#### run the app
++ Normally
 ```bash
 python main.py
 ```
-+ run the app for specific phone (see all availabel phones)
++ Specific phone
 ```
 python main.py -m screen
 ```
