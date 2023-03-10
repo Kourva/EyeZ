@@ -1,0 +1,5 @@
+buildozer
+cython
+pillow
+plyer
+kivy
