@@ -32,7 +32,7 @@ cd EyeZ
 ```
 #### ⒊ Install the requirements
 ```bash
-chmod +x Lib/install.sh && ./install.sh
+chmod +x Lib/install.sh && ./Lib/install.sh
 ```
 #### ⒋ Install python-dbus for notification (optional)
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Debian based
