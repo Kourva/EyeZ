@@ -19,7 +19,7 @@ Will be fixed in next updates! <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ App may crash due to slow internet connection (request timeout will fix it)
 
 ### ▍Idea?
-so this app works online with public APIs. if you have any idea to add let me know in 'Issues' section in repository
+So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/Kourva/EyeZ/issues).
 
 # Setup
 #### ⒈ Clone the repository
