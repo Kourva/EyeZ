@@ -10,7 +10,7 @@
 ### ▍Features
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Temporary E-mail service <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ URL shortener <br>
-&nbsp;&nbsp;&nbsp;&nbsp; ▣ E-mail Checker <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ E-mail Checker [**New**] <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Works Online with free public APIs <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Version 0.1.1
 
@@ -20,6 +20,7 @@ Will be fixed or added in next updates! <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Can't use verify links from mailbox (only OTP or messages for now) <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ App dark Theme is already cool but it can be better i think <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ ~~App may crash due to slow internet connection (request timeout will fix it)~~
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Since there is no multiprocesing fetures, only one job can be done at the same time
 
 ### ▍Idea?
 So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/Kourva/EyeZ/issues).
