@@ -8,19 +8,10 @@
 # Features:
 #  - Temporary E-mail service
 #  - URL shortener
+#  - Valid E-mail check
 #
 # Works Online with free public APIs
-# Version 0.0.0 (demo)
-#
-# Issues:
-# Will be fixed in next updates!
-#  - Can't check the valid url for now
-#  - Can't use verify links from mailbox (only OTP for now)
-#  - App may crash due to slow internet connection (request timeout will fix it)
-#
-# Idea?
-#   so this app works online with public APIs. if you have any idea to add let me
-#   know in 'Issues' section in repository
+# Version 0.1.1
 
 
 # All imported Modules
@@ -55,8 +46,8 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 
 # KV config files
 # All KV files used in this app
-for files in ["mainmenu.kv", "mailmenu.kv", "mailbox.kv", "urlmenu.kv"]:
-    with open("Scripts/%s" % files, "r") as kv:
+for files in ["mainmenu", "mailmenu", "mailbox", "urlmenu", "mailcheck"]:
+    with open("Scripts/%s.kv" % files, "r") as kv:
         Builder.load_string(kv.read())
 
 
@@ -80,15 +71,6 @@ class MainMenu(Screen):
 
     # Function for getting your IP address
     def get_ip(self):
-        def get_address(request, result):
-            self.manager.get_screen(
-                "MainMenu"
-            ).ids.IpAddr.text = f"[color=00ff00]{result.strip()}[/color]"
-            try:
-                vibrator.vibrate(0.1)
-            except:
-                pass
-
         kwargs = {
             "title": "Wait",
             "message": "Getting IP",
@@ -98,8 +80,33 @@ class MainMenu(Screen):
         }
         notification.notify(**kwargs)
 
-        target = "https://checkip.amazonaws.com"
-        request = UrlRequest(target, get_address)
+        try:
+            Clock.start_clock()
+            req1 = UrlRequest("https://checkip.amazonaws.com", timeout=10)
+            while not req1.is_finished:
+                Clock.tick()
+            Clock.stop_clock()
+
+            result = req1.result
+            self.manager.get_screen(
+                "MainMenu"
+            ).ids.IpAddr.text = (
+                f"[ref={result.strip()}][color=00ff00]{result.strip()}[/color][/ref]"
+            )
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+        except:
+            self.manager.get_screen(
+                "MainMenu"
+            ).ids.IpAddr.text = (
+                f"[ref=Are you offline?][color=ff0000]Are you offline?[/color][/ref]"
+            )
+            try:
+                vibrator.vibrate(0.2)
+            except:
+                pass
 
     # Function to check exist of email account
     def check_mail(self):
@@ -170,7 +177,7 @@ class MailMenu(Screen):
 
             # Sends request and waits to finish
             Clock.start_clock()
-            req1 = UrlRequest("https://api.mail.tm/domains")
+            req1 = UrlRequest("https://api.mail.tm/domains", timeout=10)
             while not req1.is_finished:
                 Clock.tick()
             Clock.stop_clock()
@@ -200,6 +207,7 @@ class MailMenu(Screen):
                 "https://api.mail.tm/accounts",
                 req_body=json.dumps(params),
                 req_headers=headers,
+                timeout=10,
             )
             while not req2.is_finished:
                 Clock.tick()
@@ -219,6 +227,7 @@ class MailMenu(Screen):
                 "https://api.mail.tm/token",
                 req_body=json.dumps(params),
                 req_headers=headers,
+                timeout=10,
             )
             while not req3.is_finished:
                 Clock.tick()
@@ -262,56 +271,75 @@ class MailMenu(Screen):
 
     # Function to load messages when entering inbox menu
     def load_messages(self):
-        # Gets token from database
-        with open("Data/account.txt", "r") as data:
-            lines = data.readlines()
-            try:
-                token = lines[2].split(":")[1].split("\n")[0].strip()
-            except:
-                kwargs = {
-                    "title": "Error",
-                    "message": "No account found!",
-                    "ticker": "New message",
-                    "toast": True,
-                    "app_icon": "Data/notification.png",
-                }
-                notification.notify(**kwargs)
-                return
+        try:
+            # Gets token from database
+            with open("Data/account.txt", "r") as data:
+                lines = data.readlines()
+                try:
+                    token = lines[2].split(":")[1].split("\n")[0].strip()
+                except:
+                    kwargs = {
+                        "title": "Error",
+                        "message": "No account found!",
+                        "ticker": "New message",
+                        "toast": True,
+                        "app_icon": "Data/notification.png",
+                    }
+                    notification.notify(**kwargs)
+                    return
 
-            # Sends request and waits to finish
-            Clock.start_clock()
-            req4 = UrlRequest(
-                "https://api.mail.tm/messages",
-                req_headers={"Authorization": f"Bearer {token}"},
-            )
-            while not req4.is_finished:
-                Clock.tick()
-            Clock.stop_clock()
+                # Sends request and waits to finish
+                Clock.start_clock()
+                req4 = UrlRequest(
+                    "https://api.mail.tm/messages",
+                    req_headers={"Authorization": f"Bearer {token}"},
+                    timeout=10,
+                )
+                while not req4.is_finished:
+                    Clock.tick()
+                Clock.stop_clock()
 
-            # Gets number of messages in inbox
-            result = json.loads(req4.result)
-            messages = result["hydra:totalItems"]
-            self.manager.get_screen(
-                "Mailbox"
-            ).ids.Inboxmsg.text = f"Total messages: [color=009AC2]{messages}[/color]"
+                # Gets number of messages in inbox
+                result = json.loads(req4.result)
+                messages = result["hydra:totalItems"]
+                self.manager.get_screen(
+                    "Mailbox"
+                ).ids.Inboxmsg.text = (
+                    f"Total messages: [color=009AC2]{messages}[/color]"
+                )
 
-            # Gets messages
-            if messages != 0:
-                prev = ""
-                for message in result["hydra:member"]:
-                    msg_from = (
-                        "[color=009AC2]From:[/color]\n"
-                        + message["from"]["name"]
-                        + " - "
-                        + message["from"]["address"]
-                    )
-                    subject = "[color=009AC2]Subject:\n[/color]" + message["subject"]
-                    intro = "[color=009AC2]Message:[/color]\n" + message["intro"]
-                    crnt = prev + msg_from + "\n" + subject + "\n" + intro + "\n\n\n\n"
-                    prev += crnt
-                self.manager.get_screen("Mailbox").ids.messages.text = crnt
-                return
-            self.manager.get_screen("Mailbox").ids.messages.text = ""
+                # Gets messages
+                if messages != 0:
+                    prev = ""
+                    for message in result["hydra:member"]:
+                        msg_from = (
+                            "[color=009AC2]From:[/color]\n"
+                            + message["from"]["name"]
+                            + " - "
+                            + message["from"]["address"]
+                        )
+                        subject = (
+                            "[color=009AC2]Subject:\n[/color]" + message["subject"]
+                        )
+                        intro = "[color=009AC2]Message:[/color]\n" + message["intro"]
+                        crnt = (
+                            prev + msg_from + "\n" + subject + "\n" + intro + "\n\n\n\n"
+                        )
+                        prev += crnt
+                    self.manager.get_screen("Mailbox").ids.messages.text = crnt
+                    return
+                self.manager.get_screen(
+                    "Mailbox"
+                ).ids.messages.text = "Your messages here\n\nNote that you can read simple OTP codes or messages, NOT links"
+        except:
+            kwargs = {
+                "title": "Error",
+                "message": "unexpected error occurred",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/notification.png",
+            }
+            notification.notify(**kwargs)
 
     # Function to copy data of created email address
     def copy_email(self):
@@ -364,37 +392,56 @@ class Mailbox(Screen):
             }
             notification.notify(**kwargs)
 
-            # Sends request and waits to finish
-            Clock.start_clock()
-            req4 = UrlRequest(
-                "https://api.mail.tm/messages",
-                req_headers={"Authorization": f"Bearer {token}"},
-            )
-            while not req4.is_finished:
-                Clock.tick()
-            Clock.stop_clock()
+            try:
+                # Sends request and waits to finish
+                Clock.start_clock()
+                req4 = UrlRequest(
+                    "https://api.mail.tm/messages",
+                    req_headers={"Authorization": f"Bearer {token}"},
+                    timeout=10,
+                )
+                while not req4.is_finished:
+                    Clock.tick()
+                Clock.stop_clock()
 
-            result = json.loads(req4.result)
-            messages = result["hydra:totalItems"]
-            self.manager.get_screen(
-                "Mailbox"
-            ).ids.Inboxmsg.text = f"Total messages: [color=009AC2]{messages}[/color]"
-            if messages != 0:
-                prev = ""
-                for message in result["hydra:member"]:
-                    msg_from = (
-                        "[color=009AC2]From:[/color]\n"
-                        + message["from"]["name"]
-                        + " - "
-                        + message["from"]["address"]
-                    )
-                    subject = "[color=009AC2]Subject:\n[/color]" + message["subject"]
-                    intro = "[color=009AC2]Message:[/color]\n" + message["intro"]
-                    crnt = prev + msg_from + "\n" + subject + "\n" + intro + "\n\n\n\n"
-                    prev += crnt
-                self.manager.get_screen("Mailbox").ids.messages.text = crnt
-                return
-            self.manager.get_screen("Mailbox").ids.messages.text = ""
+                result = json.loads(req4.result)
+                messages = result["hydra:totalItems"]
+                self.manager.get_screen(
+                    "Mailbox"
+                ).ids.Inboxmsg.text = (
+                    f"Total messages: [color=009AC2]{messages}[/color]"
+                )
+                if messages != 0:
+                    prev = ""
+                    for message in result["hydra:member"]:
+                        msg_from = (
+                            "[color=009AC2]From:[/color]\n"
+                            + message["from"]["name"]
+                            + " - "
+                            + message["from"]["address"]
+                        )
+                        subject = (
+                            "[color=009AC2]Subject:\n[/color]" + message["subject"]
+                        )
+                        intro = "[color=009AC2]Message:[/color]\n" + message["intro"]
+                        crnt = (
+                            prev + msg_from + "\n" + subject + "\n" + intro + "\n\n\n\n"
+                        )
+                        prev += crnt
+                    self.manager.get_screen("Mailbox").ids.messages.text = crnt
+                    return
+                self.manager.get_screen(
+                    "Mailbox"
+                ).ids.messages.text = "Your messages here\n\nNote that you can read simple OTP codes or messages, NOT links"
+            except:
+                kwargs = {
+                    "title": "Error",
+                    "message": "unexpected error occurred",
+                    "ticker": "New message",
+                    "toast": True,
+                    "app_icon": "Data/notification.png",
+                }
+                notification.notify(**kwargs)
 
 
 # URLMenu class
@@ -517,6 +564,80 @@ class URLMenu(Screen):
             webbrowser.open(link4) if link2 != "No data" else None
 
 
+# Mail Check class
+# This will handle MailCheck menu stuff
+class MailCheck(Screen):
+    # Path to Assets
+    background = "Assets/background.png"
+    font = "Assets/font.ttf"
+
+    def check_mail(self):
+        e_mail = self.manager.get_screen("MailCheck").ids.E_mail.text.strip()
+        kwargs = {
+            "title": "Wait",
+            "message": f"Checking {e_mail}",
+            "ticker": "New message",
+            "toast": True,
+            "app_icon": "Data/notification.png",
+        }
+        notification.notify(**kwargs)
+        try:
+            Clock.start_clock()
+            req1 = UrlRequest(f"https://www.disify.com/api/email/{e_mail}", timeout=10)
+            while not req1.is_finished:
+                Clock.tick()
+            Clock.stop_clock()
+
+            result = req1.result
+            if result["format"]:
+                try:
+                    domain = result["domain"]
+                except:
+                    domain = "No data"
+                try:
+                    disposable = result["disposable"]
+                except:
+                    disposable = "No data"
+                try:
+                    dns = result["dns"]
+                except:
+                    dns = "No data"
+                try:
+                    whitelist = result["whitelist"]
+                except:
+                    whitelist = False
+
+                self.manager.get_screen(
+                    "MailCheck"
+                ).ids.mailoutput.text = f"[color=00D1f4]We got the data\n\n{domain = }\n{disposable = }\n{dns = }\n{whitelist = }[/color]"
+                try:
+                    vibrator.vibrate(0.1)
+                except:
+                    pass
+            else:
+                self.manager.get_screen(
+                    "MailCheck"
+                ).ids.mailoutput.text = "[color=ff5500]Invalid format entered for email address\n\nValid emails looks like this: example@domain.com[/color]"
+                try:
+                    vibrator.vibrate(0.1)
+                except:
+                    pass
+
+        except:
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Error",
+                "message": "unexpected error occurred",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/notification.png",
+            }
+            notification.notify(**kwargs)
+
+
 # Main class of the app
 class EyeZ(App):
     # Build method
@@ -539,6 +660,10 @@ class EyeZ(App):
         # URLMenu menu screen
         self.URLMenu = URLMenu(name="URLMenu")
         root.add_widget(self.URLMenu)
+
+        # MailCheck menu screen
+        self.MailCheck = MailCheck(name="MailCheck")
+        root.add_widget(self.MailCheck)
 
         # Set current screen to main menu and return root
         root.current = "MainMenu"
