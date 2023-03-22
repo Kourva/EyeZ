@@ -1,0 +1,158 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+# MailCheck menu stuff
+<MailCheck>
+
+    # App background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: root.background
+
+    # Float layout
+    FloatLayout:
+
+        # Action bar layout
+        # You can add this if you want colored action bar. 
+        # Button:
+        #     size_hint: 1, None
+        #     height: "90dp"
+        #     pos_hint: {"top": 1}
+        #     disabled: True 
+        #     background_normal: ''
+        #     background_disabled_normal: ''
+        #     background_color: "111111"
+
+        
+        # Action bar label
+        # Label:
+        #     size_hint: 0.3 , None
+        #     height: "30dp"
+        #     pos_hint: {"center_x": 0.5, "top":0.97}
+        #     halign: "center"
+        #     markup: True 
+        #     font_size: "20sp"
+        #     font_name: root.font
+        #     text: "EyeZ"
+        #     color: "ff0000"
+
+        # Back button
+        # This will navigate you to Main menu
+        ImageButton:
+            pos_hint: {"center_x": 0.125, "top": 1}
+            size_hint: 0.1, 0.1
+            source: "Assets/back3.png"
+            on_press:
+                root.manager.transition = FadeTransition(duration=0.05)
+                root.manager.current = 'MainMenu'
+        
+        # Grid layout
+        GridLayout:
+            cols: 1
+            row_force_default: True
+            row_default_height: "35dp"
+            size_hint: (0.9, 0.7)
+            halign: "left"
+            pos_hint: {"center_x": 0.5, "center_y":0.5}
+            background_color: "00000000"
+
+            # Input label for E-mail
+            Label:
+                size_hint: 0.3 , None
+                height: "30dp"
+                pos_hint: {"center_x": 0.5, "top":0.97}
+                halign: "center"
+                markup: True 
+                font_name: "RobotoMono-Regular"
+                text: "Enter Email Address"
+                color: "ff5500"
+
+            # Input box for E-mail
+            TextInput:
+                id: E_mail
+                size_hint: (1, None)
+                height: "30dp"
+                multiline: False
+                halign: "center"
+                keyboard_suggestions: True
+                foreground_color: "009AC2"
+                hint_text: "Example@Website.com"
+                text: ""
+                hint_text_color: "aa5500"
+                font_name: "RobotoMono-Regular"
+                background_color: "#00000000"
+                background_selected: '009AC255'
+                background_normal: ''
+                canvas.before:
+                    Line:
+                        width: 1.05
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            10, 10, 10, 10, \
+                            self.height \
+                            )
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Checkmsil button
+            # This will check the given E-mail
+            Button:
+                markup: True
+                font_name: root.font
+                text: "[b]Check Email[/b]"
+                color: "ffffff"
+                background_normal: ''
+                background_color: "ff5500"
+                canvas:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            25, 25, 3, 3, \
+                            self.height \
+                            )
+                on_press:
+                    root.check_mail()
+
+        # Output box for Messages
+        ScrollView:
+            size_hint: (0.9, 0.4)
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            do_scroll_x: False
+            do_scroll_y: True
+            always_overscroll: True
+            bar_color: '#00D194'
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 0.05
+                Line:
+                    width: 1.55
+                    rounded_rectangle:
+                        ( \
+                        self.x, self.y, self.width, self.height, \
+                        10, 10, 10, 10, \
+                        self.height \
+                        )
+            # All mssages
+            Label:
+                id: mailoutput
+                markup: True
+                font_name: "RobotoMono-Regular"
+                text: "Your output here!!"
+                size_hint_y: None
+                color: "aaaaaa"
+                padding: [10, 10]
+                height: self.texture_size[1]
+                text_size: self.width, None
+                pos_hint: {'center_y': 0.5}
+
+
+# End Of Script
