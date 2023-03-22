@@ -19,7 +19,7 @@ Will be fixed or added in next updates! <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Can't check the valid url for now <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Can't use verify links from mailbox (only OTP or messages for now) <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ App dark Theme is already cool but it can be better i think <br>
-&nbsp;&nbsp;&nbsp;&nbsp; ▣ ~~App may crash due to slow internet connection (request timeout will fix it)~~
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ ~~App may crash due to slow internet connection (request timeout will fix it)~~ <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Since there is no multiprocesing fetures, only one job can be done at the same time
 
 ### ▍Idea?
