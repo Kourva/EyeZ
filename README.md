@@ -23,12 +23,12 @@ Will be fixed or added in next updates! <br>
 &nbsp;&nbsp;&nbsp;&nbsp; ▣ Since there is no multiprocesing fetures, only one job can be done at the same time
 
 ### ▍Idea?
-So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/Kourva/EyeZ/issues).
+So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/kozyol/EyeZ/issues).
 
 # Setup
 #### ⒈ Clone the repository
 ```bash
-git clone https://github.com/Kourva/EyeZ.git
+git clone https://github.com/kozyol/EyeZ.git
 ```
 #### ⒉ Navigate to Eyez directory
 ```bash
