@@ -2,8 +2,8 @@
 
 
 # EyeZ  - Social Engineering Toolkit app
-# Author: kozyol
-# GitHub: https://gitub.com/kozyol/EyeZ
+# Author: Kourva
+# GitHub: https://gitub.com/Kourva/EyeZ
 #
 # Features:
 #  - Temporary E-mail service
